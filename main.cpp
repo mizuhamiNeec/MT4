@@ -21,6 +21,7 @@ static const int kColumnWidth = 60;
 static const float kMouseSensitivity = 0.0022f;
 static const float kMoveSpeed = 0.1f;
 
+#pragma region Functions
 static float Clamp(const float value, const float min, const float max);
 
 #pragma region Structs
