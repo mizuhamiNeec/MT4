@@ -29,6 +29,7 @@ struct Mat4 final {
 	static Vec3 Transform(const Vec3& vector, const Mat4& matrix);
 	static Mat4 RotateQuaternion(Quaternion quaternion);
 	static Mat4 RotateAxisAngle(const Vec3& axis, float angle);
+	static Mat4 DirectionToDirection(const Vec3& from, const Vec3& to);
 	static Mat4 FromQuaternion(const Quaternion& q);
 	static Mat4 RotateX(float radian);
 	static Mat4 RotateY(float radian);

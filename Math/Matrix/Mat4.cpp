@@ -5,16 +5,20 @@
 #include <format>
 
 Mat4::Mat4() {
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
 			m[i][j] = (i == j) ? 1.0f : 0.0f;
 		}
 	}
 }
 
 Mat4::Mat4(const Mat4& other) {
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
 			m[i][j] = other.m[i][j];
 		}
 	}
@@ -22,10 +26,13 @@ Mat4::Mat4(const Mat4& other) {
 
 Mat4::Mat4(const std::initializer_list<std::initializer_list<float>> list) {
 	int row = 0;
-	for (const auto& sublist : list) {
+	for (const auto& sublist : list)
+	{
 		int col = 0;
-		for (const float value : sublist) {
-			if (row < 4 && col < 4) {
+		for (const float value : sublist)
+		{
+			if (row < 4 && col < 4)
+			{
 				m[row][col] = value;
 			}
 			++col;
@@ -33,9 +40,12 @@ Mat4::Mat4(const std::initializer_list<std::initializer_list<float>> list) {
 		++row;
 	}
 
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			if (i >= static_cast<int>(list.size()) || j >= static_cast<int>(((list.begin() + i))->size())) {
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			if (i >= static_cast<int>(list.size()) || j >= static_cast<int>(((list.begin() + i))->size()))
+			{
 				m[i][j] = 0.0f;
 			}
 		}
@@ -43,7 +53,7 @@ Mat4::Mat4(const std::initializer_list<std::initializer_list<float>> list) {
 }
 
 const Mat4 Mat4::identity = Mat4();
-const Mat4 Mat4::zero = { {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}} };
+const Mat4 Mat4::zero = {{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}};
 
 Mat4 Mat4::operator+(const Mat4& rhs) const {
 	return {
@@ -70,14 +80,18 @@ Mat4 Mat4::operator-(const Mat4& rhs) const {
 Mat4 Mat4::operator*(const Mat4& rhs) const {
 	Mat4 result;
 	float rhsColumn[4][4];
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
 			rhsColumn[i][j] = rhs.m[j][i];
 		}
 	}
 
-	for (int row = 0; row < 4; ++row) {
-		for (int col = 0; col < 4; ++col) {
+	for (int row = 0; row < 4; ++row)
+	{
+		for (int col = 0; col < 4; ++col)
+		{
 			result.m[row][col] = m[row][0] * rhsColumn[col][0] +
 				m[row][1] * rhsColumn[col][1] +
 				m[row][2] * rhsColumn[col][2] +
@@ -102,24 +116,22 @@ Mat4& Mat4::operator*=(const Mat4& mat4) {
 }
 
 float Mat4::Determinant() const {
-	return m[0][0] * (m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) - m[1][2] * (m[2][1] * m[3][3] - m[2][3] * m[3][
-		1]) + m[1][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1])) - m[0][1] * (m[1][0] * (m[2][2] * m[3][3] - m[2][3]
-			* m
+	return
+		m[0][0] * (m[1][1] * (m[2][2] * m[3][3] - m[2][3] * m[3][2]) - m[1][2] * (m[2][1] * m[3][3] - m[2][3] * m[3][1])
+			+ m[1][3] * (m[2][1] * m[3][2] - m[2][2] * m[3][1])) - m[0][1] * (m[1][0] * (m[2][2] * m[3][3] - m[2][3] * m
 			[3][2]) - m[1][2] * (m[2][0] * m[3][3] - m[2][3] * m[3][0]) + m[1][3] * (m[2][0] * m[3][2] - m[2][2] * m[3][
-				0]))
-			+ m[0][2] * (m[1][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1]) - m[1][1] * (m[2][0] * m[3][3] - m[2][3] * m[3][
-				0]) +
-				m[1][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0])) - m[0][3] * (m[1][0] * (m[2][1] * m[3][2] - m[2][2] * m[
-					3][
-						1]) - m[1][1] * (m[2][0] * m[3][2] - m[2][2] * m[3][0]) + m[1][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][
-							0]));
+			0])) + m[0][2] * (m[1][0] * (m[2][1] * m[3][3] - m[2][3] * m[3][1]) - m[1][1] * (m[2][0] * m[3][3] - m[2][3]
+			* m[3][0]) + m[1][3] * (m[2][0] * m[3][1] - m[2][1] * m[3][0])) -
+		m[0][3] * (m[1][0] * (m[2][1] * m[3][2] - m[2][2] * m[3][1]) - m[1][1] * (m[2][0] * m[3][2] - m[2][2] * m[3][0])
+			+ m[1][2] * (m[2][0] * m[3][1] - m[2][1] * m[3][0]));
 }
 
 Mat4 Mat4::Inverse() const {
 	Mat4 result;
 	const float det = Determinant();
 
-	if (det == 0.0f) {
+	if (det == 0.0f)
+	{
 		return result;
 	}
 
@@ -178,8 +190,10 @@ Mat4 Mat4::Transpose() const {
 
 void Mat4::LogMat4() {
 	std::wstring result;
-	for (float(&i)[4] : m) {
-		for (float& j : i) {
+	for (float (&i)[4] : m)
+	{
+		for (float& j : i)
+		{
 			result += std::format(L"{:.2f} ", j);
 		}
 		result += L"\n";
@@ -273,6 +287,97 @@ Mat4 Mat4::RotateAxisAngle(const Vec3& axis, const float angle) {
 	result.m[2][0] = x * z * oneMinusCos + y * sin;
 	result.m[2][1] = y * z * oneMinusCos - x * sin;
 	result.m[2][2] = cos + z * z * oneMinusCos;
+
+	return result;
+}
+
+Mat4 Mat4::DirectionToDirection(const Vec3& from, const Vec3& to) {
+	// 方向ベクトルを正規化
+	Vec3 u = from.Normalized();
+	Vec3 v = to.Normalized();
+
+	// cosθを計算
+	float cos_theta = u.Dot(v);
+
+	// ベクトルが平行の場合の特殊処理
+	if (cos_theta > 0.9999f)
+	{
+		return Mat4::identity;
+	}
+
+	if (cos_theta < -0.9999f)
+	{
+		// 正反対を向いている場合の処理
+		Vec3 axis;
+		if (std::abs(u.x) < std::abs(u.y) && std::abs(u.x) < std::abs(u.z))
+		{
+			axis = Vec3(1.0f, 0.0f, 0.0f).Cross(u);
+		} else if (std::abs(u.y) < std::abs(u.z))
+		{
+			axis = Vec3(0.0f, 1.0f, 0.0f).Cross(u);
+		} else
+		{
+			axis = Vec3(0.0f, 0.0f, 1.0f).Cross(u);
+		}
+		axis = axis.Normalized();
+
+		// 180度回転の行列を直接構築
+		Mat4 result;
+		result.m[0][0] = 2.0f * axis.x * axis.x - 1.0f;
+		result.m[0][1] = 2.0f * axis.x * axis.y;
+		result.m[0][2] = 2.0f * axis.x * axis.z;
+		result.m[0][3] = 0.0f;
+
+		result.m[1][0] = 2.0f * axis.x * axis.y;
+		result.m[1][1] = 2.0f * axis.y * axis.y - 1.0f;
+		result.m[1][2] = 2.0f * axis.y * axis.z;
+		result.m[1][3] = 0.0f;
+
+		result.m[2][0] = 2.0f * axis.x * axis.z;
+		result.m[2][1] = 2.0f * axis.y * axis.z;
+		result.m[2][2] = 2.0f * axis.z * axis.z - 1.0f;
+		result.m[2][3] = 0.0f;
+
+		result.m[3][0] = 0.0f;
+		result.m[3][1] = 0.0f;
+		result.m[3][2] = 0.0f;
+		result.m[3][3] = 1.0f;
+
+		return result;
+	}
+
+	// 回転軸を計算
+	Vec3 axis = u.Cross(v);
+	float sin_theta = axis.Length();
+	axis = axis.Normalized();
+
+	// 数値の安定性のために、より正確なsin_thetaを使用
+	sin_theta = std::sqrt(std::max(0.0f, 1.0f - cos_theta * cos_theta));
+
+	// 回転行列を直接構築（Rodriguesの回転公式を使用）
+	Mat4 result;
+	float t = 1.0f - cos_theta;
+
+	// より正確な行列要素の計算（行ベクトル形式）
+	result.m[0][0] = cos_theta + axis.x * axis.x * t;
+	result.m[1][0] = axis.x * axis.y * t - axis.z * sin_theta;
+	result.m[2][0] = axis.x * axis.z * t + axis.y * sin_theta;
+	result.m[3][0] = 0.0f;
+
+	result.m[0][1] = axis.x * axis.y * t + axis.z * sin_theta;
+	result.m[1][1] = cos_theta + axis.y * axis.y * t;
+	result.m[2][1] = axis.y * axis.z * t - axis.x * sin_theta;
+	result.m[3][1] = 0.0f;
+
+	result.m[0][2] = axis.x * axis.z * t - axis.y * sin_theta;
+	result.m[1][2] = axis.y * axis.z * t + axis.x * sin_theta;
+	result.m[2][2] = cos_theta + axis.z * axis.z * t;
+	result.m[3][2] = 0.0f;
+
+	result.m[0][3] = 0.0f;
+	result.m[1][3] = 0.0f;
+	result.m[2][3] = 0.0f;
+	result.m[3][3] = 1.0f;
 
 	return result;
 }
@@ -417,26 +522,31 @@ Mat4 Mat4::ViewportMat(
 Quaternion Mat4::ToQuaternion() const {
 	Quaternion q;
 	float trace = m[0][0] + m[1][1] + m[2][2];
-	if (trace > 0) {
+	if (trace > 0)
+	{
 		float s = 0.5f / sqrtf(trace + 1.0f);
 		q.w = 0.25f / s;
 		q.x = (m[2][1] - m[1][2]) * s;
 		q.y = (m[0][2] - m[2][0]) * s;
 		q.z = (m[1][0] - m[0][1]) * s;
-	} else {
-		if (m[0][0] > m[1][1] && m[0][0] > m[2][2]) {
+	} else
+	{
+		if (m[0][0] > m[1][1] && m[0][0] > m[2][2])
+		{
 			float s = 2.0f * sqrtf(1.0f + m[0][0] - m[1][1] - m[2][2]);
 			q.w = (m[2][1] - m[1][2]) / s;
 			q.x = 0.25f * s;
 			q.y = (m[0][1] + m[1][0]) / s;
 			q.z = (m[0][2] + m[2][0]) / s;
-		} else if (m[1][1] > m[2][2]) {
+		} else if (m[1][1] > m[2][2])
+		{
 			float s = 2.0f * sqrtf(1.0f + m[1][1] - m[0][0] - m[2][2]);
 			q.w = (m[0][2] - m[2][0]) / s;
 			q.x = (m[0][1] + m[1][0]) / s;
 			q.y = 0.25f * s;
 			q.z = (m[1][2] + m[2][1]) / s;
-		} else {
+		} else
+		{
 			float s = 2.0f * sqrtf(1.0f + m[2][2] - m[0][0] - m[1][1]);
 			q.w = (m[1][0] - m[0][1]) / s;
 			q.x = (m[0][2] + m[2][0]) / s;
@@ -462,7 +572,7 @@ Vec3& Mat4::TransformPoint(Vec3 vec3) const {
 }
 
 Vec3 Mat4::GetTranslate() {
-	return { m[3][0], m[3][1], m[3][2] };
+	return {m[3][0], m[3][1], m[3][2]};
 }
 
 Vec3 Mat4::GetRotate() const {
