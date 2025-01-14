@@ -127,6 +127,7 @@ static Vec3 Perpendicular(const Vec3& vector);
 
 static void MatrixScreenPrintf(const int x, const int y, const Mat4& matrix, const char* label);
 static void VectorScreenPrintf(const int x, const int y, const Vec3& vector, const char* label);
+static void QuaternionScreenPrintf(const int x, const int y, const Quaternion& quaternion, const char* label);
 
 static void DrawSphere(
 	const Sphere& sphere, const Mat4& viewProjectionMatrix, const Mat4& viewportMatrix, uint32_t color
@@ -174,15 +175,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int mouseX, mouseY;
 	Novice::GetMousePosition(&mouseX, &mouseY);
 
-	Vec3 from0 = Vec3(1.0f, 0.7f, 0.5f).Normalized();
-	Vec3 to0 = -from0;
-	Vec3 from1 = Vec3(-0.6f, 0.9f, 0.2f).Normalized();
-	Vec3 to1 = Vec3(0.4f, 0.7f, -0.5f).Normalized();
-	Mat4 rotateMatrix0 = Mat4::DirectionToDirection(
-		Vec3(1.0f, 0.0f, 0.0f).Normalized(), Vec3(-1.0f, 0.0f, 0.0f).Normalized()
-	);
-	Mat4 rotateMatrix1 = Mat4::DirectionToDirection(from0, to0);
-	Mat4 rotateMatrix2 = Mat4::DirectionToDirection(from1, to1);
+	Quaternion q1 = { 2.0f , 3.0f, 4.0f, 1.0f };
+	Quaternion q2 = { 1.0f, 3.0f, 5.0f, 2.0f };
+	Quaternion identity = Quaternion::identity;
+	Quaternion conj = q1.Conjugate();
+	Quaternion inv = q1.Inverse();
+	Quaternion normal = q1.Normalized();
+	Quaternion mul1 = q1 * q2;
+	Quaternion mul2 = q2 * q1;
+	float norm = q1.Norm();
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -305,9 +306,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		ImGui::End();
 
-		MatrixScreenPrintf(0, 0, rotateMatrix0, "rotateMatrix0");
-		MatrixScreenPrintf(0, kRowHeight * 5, rotateMatrix1, "rotateMatrix1");
-		MatrixScreenPrintf(0, kRowHeight * 10, rotateMatrix2, "rotateMatrix2");
+		QuaternionScreenPrintf(0, 0, identity, "Identity");
+		QuaternionScreenPrintf(0, kRowHeight, conj, "Conjugate");
+		QuaternionScreenPrintf(0, kRowHeight * 2, inv, "Inverse");
+		QuaternionScreenPrintf(0, kRowHeight * 3, normal, "Normalize");
+		QuaternionScreenPrintf(0, kRowHeight * 4, mul1, "Multiply(q1, q2)");
+		QuaternionScreenPrintf(0, kRowHeight * 5, mul2, "Multiply(q2, q1)");
+		Novice::ScreenPrintf(0, kRowHeight * 6, "%.2f		: Norm", norm);
 
 		///
 		/// ↑描画処理ここまで
@@ -577,6 +582,10 @@ inline void MatrixScreenPrintf(const int x, const int y, const Mat4& matrix, con
 
 inline void VectorScreenPrintf(const int x, const int y, const Vec3& vector, const char* label) {
 	Novice::ScreenPrintf(x, y, "%6.02f %6.02f %6.02f %s", vector.x, vector.y, vector.z, label);
+}
+
+void QuaternionScreenPrintf(const int x, const int y, const Quaternion& quaternion, const char* label) {
+	Novice::ScreenPrintf(x, y, "%6.02f %6.02f %6.02f %6.02f	: %s", quaternion.x, quaternion.y, quaternion.z, quaternion.w, label);
 }
 
 inline void DrawSphere(

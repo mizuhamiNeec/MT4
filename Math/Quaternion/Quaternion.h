@@ -29,6 +29,7 @@ struct Quaternion {
 	Vec3 ToEulerAngles() const;
 	Vec3 ToEulerDegrees();
 	Vec3 GetAxis() const;
+	float Norm();
 	float GetRotationAroundAxis(const Vec3& axis) const;
 	float GetAngle() const;
 	float GetAngleDegrees() const;

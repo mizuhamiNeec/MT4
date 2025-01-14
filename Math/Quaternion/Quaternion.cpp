@@ -11,15 +11,13 @@ Quaternion::Quaternion() :
 	x(0),
 	y(0),
 	z(0),
-	w(1) {
-}
+	w(1) {}
 
 Quaternion::Quaternion(const float x, const float y, const float z, const float w) :
 	x(x),
 	y(y),
 	z(z),
-	w(w) {
-}
+	w(w) {}
 
 Quaternion::Quaternion(const Vec3& axis, const float angleRad) {
 	const float halfAngle = angleRad * 0.5f;
@@ -208,7 +206,11 @@ Vec3 Quaternion::GetAxis() const {
 	if (scale < 1e-6f) {
 		return Vec3::up;
 	}
-	return {x / scale, y / scale, z / scale};
+	return { x / scale, y / scale, z / scale };
+}
+
+float Quaternion::Norm() {
+	return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
 float Quaternion::GetRotationAroundAxis(const Vec3& axis) const {
