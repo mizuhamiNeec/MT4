@@ -4,6 +4,8 @@
 
 #include "Vec2.h"
 
+struct Quaternion;
+
 struct Vec3 final {
 	float x, y, z;
 
@@ -18,13 +20,11 @@ struct Vec3 final {
 
 	constexpr Vec3(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f) : x(x),
 		y(y),
-		z(z) {
-	}
+		z(z) {}
 
 	constexpr Vec3(const Vec2 vec2) : x(vec2.x),
-	                                  y(vec2.y),
-	                                  z(0.0f) {
-	}
+		y(vec2.y),
+		z(0.0f) {}
 
 	/* ---------------- 関数類 ---------------- */
 	float Length() const;
@@ -42,6 +42,8 @@ struct Vec3 final {
 	Vec3 Clamp(Vec3 min, Vec3 max) const;
 	Vec3 ClampLength(float min, float max);
 	Vec3 Reflect(const Vec3& normal) const;
+
+	Vec3 Rotate(Quaternion quaternion) const;
 
 	/* ---------------- 演算子 ---------------- */
 	float& operator[](uint32_t index);

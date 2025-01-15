@@ -4,6 +4,7 @@
 #include <cmath>
 #include <format>
 #include <stdexcept>
+#include "../Quaternion/Quaternion.h"
 
 const Vec3 Vec3::zero(0.0f, 0.0f, 0.0f);
 const Vec3 Vec3::one(1.0f, 1.0f, 1.0f);
@@ -88,6 +89,11 @@ Vec3 Vec3::ClampLength(const float min, const float max) {
 
 Vec3 Vec3::Reflect(const Vec3& normal) const {
 	return *this - 2 * this->Dot(normal) * normal;
+}
+
+Vec3 Vec3::Rotate(Quaternion quaternion) const {
+	Quaternion q = quaternion * Quaternion(x, y, z, 0) * quaternion.Inverse();
+	return { q.x, q.y, q.z };
 }
 
 float& Vec3::operator[](const uint32_t index) {

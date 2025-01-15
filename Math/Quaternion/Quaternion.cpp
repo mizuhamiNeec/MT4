@@ -5,6 +5,8 @@
 
 #include "../MathLib.h"
 
+#include "../Vector/Vec3.h"
+
 const Quaternion Quaternion::identity = Quaternion(0, 0, 0, 1);
 
 Quaternion::Quaternion() :
