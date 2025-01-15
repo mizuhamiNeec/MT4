@@ -8,7 +8,7 @@
 #include "Math/MathLib.h"
 #include "Math/Matrix/Mat4.h"
 
-const char kWindowTitle[] = "LE2B_24_ミズサワ_ハミル_MT4_01_04_確認課題";
+const char kWindowTitle[] = "LE2B_24_ミズサワ_ハミル_MT4_01_05_確認課題";
 
 constexpr int kWindowWidth = 1280;
 constexpr int kWindowHeight = 720;
